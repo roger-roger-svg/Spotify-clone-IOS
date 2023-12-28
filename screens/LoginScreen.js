@@ -5,6 +5,7 @@ import { Entypo } from "@expo/vector-icons";
 import { Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import * as AppAuth from "expo-app-auth";
 
 const LoginScreen = () => {

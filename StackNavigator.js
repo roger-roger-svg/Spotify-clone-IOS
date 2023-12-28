@@ -77,7 +77,7 @@ function Navigation() {
         />
         <Stack.Screen
           name="Main"
-          component={BottomTabs}
+          component={HomeScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
