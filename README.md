@@ -11,3 +11,5 @@ O objetivo deste projeto é criar uma versão simplificada do aplicativo Spotify
 - Reprodução de Música: Ouça suas músicas favoritas com uma interface de reprodução fácil de usar.
 - Navegação por Playlists: Explore e reproduza playlists personalizadas.
 - Busca de Músicas: Encontre suas músicas preferidas com facilidade usando a função de busca.
+
+-tela de login
