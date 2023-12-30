@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Pressable } from "react-native";
@@ -7,8 +7,30 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as AppAuth from "expo-app-auth";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 const LoginScreen = () => {
+  const navigation = useNavigation();
+  useEffect(() => {
+    const checkTokenValidity = async () => {
+      const accessToken = await AsyncStorage.getItem("token");
+      const expirationDate = await AsyncStorage.getItem("expirationDate");
+      console.log("acess token", accessToken);
+      console.log("expirationDate", expirationDate);
+      if (accessToken && expirationDate) {
+        const currentTime = Date.now();
+        if (currentTime < parseInt(expirationDate)) {
+          //aqui o token ainda é válido
+          navigation.replace("Main");
+        } else {
+          // o token seria expirado entao é preciso remove-lo do async storage
+          AsyncStorage.removeItem("token");
+          AsyncStorage.removeItem("expirationDate");
+        }
+      }
+    };
+    checkTokenValidity();
+  }, []);
   async function authenticate() {
     const config = {
       issuer: "https://accounts.spotify.com",
@@ -25,6 +47,14 @@ const LoginScreen = () => {
     };
     const result = await AppAuth.authAsync[config];
     console.log(result);
+    if (result.accessToken) {
+      const expirationDate = new Date(
+        result.accessTokenExpirationDate
+      ).getTime();
+      AsyncStorage.setItem("token,result.accessToken");
+      AsyncStorage.setItem("expirationDate", expirationDate.toString());
+      navigation.navigate("Main");
+    }
   }
 
   return (
@@ -34,7 +64,7 @@ const LoginScreen = () => {
         <Entypo
           style={{ textAlign: "center" }}
           name="spotify"
-          size={24}
+          size={80}
           color="white"
         />
         <Text
